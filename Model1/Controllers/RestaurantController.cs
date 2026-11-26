@@ -39,5 +39,19 @@ namespace Model1.Controllers
 
             return ApiResult.Ok(new { total, rows });
         }
+        [HttpGet("system/api/restaurant/{restaurantId}")]
+        public ApiResult Detail (int restaurantId)
+        {
+            var x = db.Restaurants.FirstOrDefault(r => r.RestaurantId == restaurantId);
+            if (x == null)
+                return ApiResult.Fail(404, "Restaurant not found");
+            return ApiResult.Ok(new {
+                x.BusinessHours, x.RemainingParkingSpaces, x.RestaurantId,
+                x.RestaurantName, x.Address, x.Phone,
+                rating = x.Rating.ToString(), x.PriceRange, x.RestaurantType,
+                x.ImageUrl, x.Description, distance = x.Distance.ToString(),
+                businessType = "restaurant"
+            });
+        }
     }
 }
